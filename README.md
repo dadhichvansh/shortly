@@ -1,6 +1,6 @@
-# 🔗 URL Shortener - Node.js
+# 🔗 URL Shortener - Express.js
 
-A simple URL shortener application built using **Node.js** for the backend and **HTML/CSS/JS** for the frontend. This project allows users to shorten long URLs into a custom or randomly generated short code and access them later using that code.
+A simple URL shortener application built using **Express.js** for the backend and **HTML/CSS** for the frontend. This project allows users to shorten long URLs into a custom or randomly generated short code and access them later using that code.
 
 ## 🚀 Features
 
@@ -12,8 +12,8 @@ A simple URL shortener application built using **Node.js** for the backend and *
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Node.js (HTTP module, fs/promises, crypto)
-- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Express.js (fs/promises, crypto)
+- **Frontend**: HTML, CSS
 - **Storage**: JSON file (local filesystem)
 
 ## 📁 Project Structure
@@ -25,14 +25,15 @@ url-shortener-nodejs/
 │ └── links.json # Stores URL and short code mapping
 │
 ├── public/
-│ ├── index.html # Frontend UI
-│ ├── style.css # Styling
-│ └── script.js # Frontend JS logic
+│ └── style.css # Styling
 │
-├── src/
-│ └── main.js # Backend HTTP server
+├── views/
+│ └── index.html # Frontend UI
 │
-├── package.json # (Optional) For npm dependencies if added
+├── main.js # Backend server
+├── validation.js # PORT validation
+│
+├── package.json # For npm dependencies
 └── README.md # Project documentation
 ```
 
@@ -41,7 +42,7 @@ url-shortener-nodejs/
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/dadhichvansh/url-shortener-nodejs.git
+git clone https://github.com/dadhichvansh/url-shortener-expressjs.git
 cd url-shortener-nodejs
 ```
 
@@ -51,14 +52,25 @@ cd url-shortener-nodejs
 npm install
 ```
 
-3. **Start the server**
+3. **Set up environment variables**
+
+- If you need to set any environment variables, create a `.env` file in the root directory.
+- For example, you can set the `PORT` variable to change the server port:
+
+```bash
+PORT=3000
+```
+
+You can see `.env.example` for reference.
+
+4. **Start the server**
 
 ```bash
 - npm start - to start the server
 - npm run dev - to start the server in development mode
 ```
 
-4. **Open in browser**
+5. **Open in browser**
 
 Navigate to: http://localhost:3000
 
