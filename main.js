@@ -66,7 +66,10 @@ app.post("/", async (req, res) => {
     await saveLinks(links);
 
     res.redirect("/");
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error.");
+  }
 });
 
 app.get("/:shortCode", async (req, res) => {
