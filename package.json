@@ -1,0 +1,17 @@
+{
+  "name": "url-shortener-nodejs",
+  "version": "1.0.0",
+  "description": "url shortener project in node.js",
+  "license": "ISC",
+  "author": "Vansh Dadhich",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node --env-file=.env --watch main.js",
+    "start": "node --env-file=.env main.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "zod": "^3.25.67"
+  }
+}
