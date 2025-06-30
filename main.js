@@ -1,5 +1,4 @@
 import { readFile, writeFile } from "fs/promises";
-import { createServer } from "http";
 import crypto from "crypto";
 import path from "path";
 import express from "express";
@@ -30,8 +29,20 @@ const saveLinks = async (links) => {
 
 app.get("/", async (req, res) => {
   try {
-    const file = await fs.readFile(path.join("public", "index.html"));
+    const file = await readFile(path.join("views", "index.html"));
     const links = await loadLinks();
+
+    const content = file.toString().replaceAll(
+      "{{ shortened_urls }}",
+      Object.entries(links)
+        .map(
+          ([shortCode, url]) =>
+            `<li><a href="${shortCode}" target="_blank">${req.host}/${shortCode}</a> &rarr; ${url}</li>`
+        )
+        .join("")
+    );
+
+    return res.send(content);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal server error.");
@@ -53,9 +64,24 @@ app.post("/", async (req, res) => {
 
     links[finalShortCode] = url;
     await saveLinks(links);
+
+    res.redirect("/");
   } catch (error) {}
 });
 
-server.listen(PORT, () => {
+app.get("/:shortCode", async (req, res) => {
+  try {
+    const { shortCode } = req.params;
+    const links = await loadLinks();
+
+    if (!links[shortCode]) return res.status(404).send("Page not found.");
+    return res.redirect(links[shortCode]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error.");
+  }
+});
+
+app.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`);
 });
