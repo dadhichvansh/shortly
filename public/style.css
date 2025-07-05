@@ -1,32 +1,38 @@
+/* Reset & Base Styles */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
   background-color: #f4f4f4;
-  padding: 40px;
+  padding: 40px 20px;
   display: flex;
   justify-content: center;
+  min-height: 100vh;
 }
 
+/* Container */
 .container {
   background-color: #fff;
   padding: 30px 40px;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
 }
 
+/* Heading */
 form h1 {
   text-align: center;
   margin-bottom: 25px;
-  color: #333;
+  color: #222;
+  font-size: 28px;
 }
 
+/* Form Inputs */
 form div {
   margin-bottom: 20px;
 }
@@ -41,18 +47,20 @@ label {
 input[type="url"],
 input[type="text"] {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
-  transition: border 0.3s;
+  transition: border-color 0.3s ease;
 }
 
 input:focus {
   outline: none;
   border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
+/* Button */
 button[type="submit"] {
   width: 100%;
   background-color: #007bff;
@@ -63,29 +71,35 @@ button[type="submit"] {
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
+/* Shortened URLs Header */
 h2 {
-  margin-top: 30px;
+  margin-top: 35px;
+  margin-bottom: 15px;
   color: #333;
   text-align: center;
+  font-size: 22px;
 }
 
+/* Shortened URL List */
 #shortened-urls {
-  list-style-type: none;
+  list-style: none;
   padding-left: 0;
-  margin-top: 15px;
 }
 
 #shortened-urls li {
   background-color: #e9f1ff;
-  padding: 10px 15px;
+  padding: 12px 16px;
   border-radius: 6px;
   margin-bottom: 10px;
-  word-break: break-all;
+  word-break: break-word;
+  font-size: 15px;
+  color: #333;
+  border-left: 4px solid #007bff;
 }
