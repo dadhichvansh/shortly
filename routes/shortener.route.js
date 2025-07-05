@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { readFile, writeFile } from "fs/promises";
+import path from "path";
 import crypto from "crypto";
 
 const shortenerRoute = Router();
+const DATA_FILE = path.join("data", "links.json");
 
 const loadLinks = async () => {
   try {
