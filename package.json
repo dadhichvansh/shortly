@@ -1,18 +1,26 @@
 {
   "name": "url-shortener-nodejs",
   "version": "1.0.0",
-  "description": "url shortener project in node.js",
+  "description": "Url shortener project in Express.js",
   "license": "ISC",
   "author": "Vansh Dadhich",
   "type": "module",
   "main": "main.js",
   "scripts": {
     "dev": "node --env-file=.env --watch main.js",
-    "start": "node --env-file=.env main.js"
+    "start": "node --env-file=.env main.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit"
   },
   "dependencies": {
+    "drizzle-orm": "^0.44.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "mysql2": "^3.14.2",
     "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.4"
   }
 }
