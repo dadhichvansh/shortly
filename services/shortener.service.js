@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
-import { shortLinksTable } from "../drizzle/schema.js";
+import { shortLinksTable } from "../db/schema.js";
 
 export const fetchShortenedUrls = async () => {
   return await db.select().from(shortLinksTable);
