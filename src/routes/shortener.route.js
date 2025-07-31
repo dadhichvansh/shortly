@@ -5,10 +5,10 @@ import {
   redirectToShortenedUrl,
 } from "../controllers/shortener.controller.js";
 
-const shortenerRoute = Router();
+const router = Router();
 
-shortenerRoute.get("/", fetchShortenedUrl);
-shortenerRoute.post("/", createShortenedUrl);
-shortenerRoute.get("/:shortCode", redirectToShortenedUrl);
+router.get("/", fetchShortenedUrl);
+router.post("/", createShortenedUrl);
+router.get("/:shortCode", redirectToShortenedUrl);
 
-export { shortenerRoute };
+export const shortenerRoute = router;
