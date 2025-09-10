@@ -1,9 +1,10 @@
+import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from '../constants.js';
 import {
-  ACCESS_TOKEN_EXPIRY,
-  MILLISECONDS_PER_SECOND,
-  REFRESH_TOKEN_EXPIRY,
-} from '../constants.js';
-import { refreshTokens, verifyJwt } from '../services/auth.service.js';
+  clearUserSession,
+  findSessionById,
+  refreshTokens,
+  verifyJwt,
+} from '../services/auth.service.js';
 
 export const verifyAuthentication = async (req, res, next) => {
   const accessToken = req.cookies.access_token;
@@ -38,16 +39,34 @@ export const verifyAuthentication = async (req, res, next) => {
 
       res.cookie('access_token', newAccessToken, {
         ...baseConfig,
-        maxAge: ACCESS_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND,
+        maxAge: ACCESS_TOKEN_EXPIRY,
       });
       res.cookie('refresh_token', newRefreshToken, {
         ...baseConfig,
-        maxAge: REFRESH_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND,
+        maxAge: REFRESH_TOKEN_EXPIRY,
       });
 
       return next();
     } catch (error) {
       console.error('An error occurred while refreshing tokens:', error);
+
+      // Cleanup DB session if refresh token expired/invalid
+      try {
+        const decoded = verifyJwt(refreshToken, { ignoreExpiration: true });
+
+        if (decoded?.sessionId) {
+          const session = await findSessionById(decoded.sessionId);
+
+          if (session && session.expiresAt < new Date()) {
+            await clearUserSession(decoded.sessionId);
+          }
+        }
+      } catch (e) {
+        console.error(
+          'Failed to decode expired refresh token for cleanup:',
+          e.message
+        );
+      }
 
       // Clear cookies and set user as null upon refresh failure
       res.clearCookie('access_token');
