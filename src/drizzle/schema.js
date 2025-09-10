@@ -29,6 +29,7 @@ export const sessionsTable = mysqlTable('sessions', {
   userAgent: text('user_agent'),
   ip: varchar({ length: 255 }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
 });
 

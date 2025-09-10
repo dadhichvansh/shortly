@@ -22,6 +22,13 @@
       "when": 1757340619069,
       "tag": "0002_damp_odin",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1757533256949,
+      "tag": "0003_absurd_klaw",
+      "breakpoints": true
     }
   ]
 }
