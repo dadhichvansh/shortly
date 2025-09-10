@@ -13,8 +13,6 @@ export const sendEmail = async ({ to, subject, html }) => {
 
     if (error) {
       return console.error('Error response from Resend:', { error });
-    } else {
-      console.log(data);
     }
   } catch (error) {
     console.error('Error sending email:', error);
