@@ -8,6 +8,7 @@ import { PORT } from './src/validators/env.validator.js';
 import { verifyAuthentication } from './src/middlewares/verify-auth.middleware.js';
 import { shortenerRoute } from './src/routes/shortener.route.js';
 import { authRoutes } from './src/routes/auth.route.js';
+import { scheduleCleanupJob } from './src/jobs/cleanupSessions.js';
 
 // Initialize Express app
 const app = express();
@@ -31,10 +32,15 @@ app.use(cookieParser());
 
 app.use(
   session({
-    cookie: { secure: true, httpOnly: true },
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      sameSite: 'strict',
+    },
     secret: process.env.SESSION_SECRET,
-    resave: true,
+    resave: false,
     saveUninitialized: false,
+    maxAge: 1000 * 60 * 60, // 1 hour
   })
 );
 
@@ -54,6 +60,9 @@ app.use((req, res, next) => {
 // Routes
 app.use(authRoutes);
 app.use(shortenerRoute);
+
+// Start cron job for session cleanup
+scheduleCleanupJob();
 
 // Start the server
 app.listen(PORT, () => {
