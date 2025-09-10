@@ -14,6 +14,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import mjml2html from 'mjml';
 import ejs from 'ejs';
+import { MILLISECONDS_PER_SECOND } from '../constants.js';
 
 export const doesUserExist = async (email) => {
   const [username] = await db
@@ -48,15 +49,25 @@ export const createSession = async (userId, { ip, userAgent }) => {
   return session;
 };
 
-export const createAccessToken = ({ id, username, email, sessionId }) => {
-  return jwt.sign({ id, username, email, sessionId }, process.env.JWT_SECRET, {
-    expiresIn: ACCESS_TOKEN_EXPIRY, // 15 mins expiry
-  });
+export const createAccessToken = ({
+  id,
+  username,
+  email,
+  isEmailValid,
+  sessionId,
+}) => {
+  return jwt.sign(
+    { id, username, email, isEmailValid, sessionId },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: ACCESS_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND, // 15 mins expiry
+    }
+  );
 };
 
 export const createRefreshToken = (sessionId) => {
   return jwt.sign({ sessionId }, process.env.JWT_SECRET, {
-    expiresIn: REFRESH_TOKEN_EXPIRY, // 1 week expiry
+    expiresIn: REFRESH_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND, // 1 week expiry
   });
 };
 
@@ -135,11 +146,11 @@ export const createUserSession = async ({ req, res, user, name, email }) => {
 
   res.cookie('access_token', accessToken, {
     ...baseConfig,
-    maxAge: ACCESS_TOKEN_EXPIRY,
+    maxAge: ACCESS_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND,
   });
   res.cookie('refresh_token', refreshToken, {
     ...baseConfig,
-    maxAge: REFRESH_TOKEN_EXPIRY,
+    maxAge: REFRESH_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND,
   });
 };
 
