@@ -41,9 +41,13 @@ export const comparePassword = async (hashedPassword, password) => {
 };
 
 export const createSession = async (userId, { ip, userAgent }) => {
+  const expiresAt = new Date(
+    Date.now() + REFRESH_TOKEN_EXPIRY * MILLISECONDS_PER_SECOND
+  );
+
   const [session] = await db
     .insert(sessionsTable)
-    .values({ userId, ip, userAgent })
+    .values({ userId, ip, userAgent, expiresAt })
     .$returningId();
 
   return session;
@@ -71,8 +75,8 @@ export const createRefreshToken = (sessionId) => {
   });
 };
 
-export const verifyJwt = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
+export const verifyJwt = (token, options = {}) => {
+  return jwt.verify(token, process.env.JWT_SECRET, options);
 };
 
 export const findSessionById = async (sessionId) => {
@@ -142,15 +146,19 @@ export const createUserSession = async ({ req, res, user, name, email }) => {
     sessionId: session.id,
   });
   const refreshToken = createRefreshToken(session.id);
-  const baseConfig = { httpOnly: true, secure: true };
+  const baseConfig = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  };
 
   res.cookie('access_token', accessToken, {
     ...baseConfig,
-    maxAge: ACCESS_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND,
+    maxAge: ACCESS_TOKEN_EXPIRY,
   });
   res.cookie('refresh_token', refreshToken, {
     ...baseConfig,
-    maxAge: REFRESH_TOKEN_EXPIRY / MILLISECONDS_PER_SECOND,
+    maxAge: REFRESH_TOKEN_EXPIRY,
   });
 };
 
