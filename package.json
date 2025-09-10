@@ -1,5 +1,5 @@
 {
-  "name": "url-shortener-nodejs",
+  "name": "url-shortener-expressjs",
   "version": "1.1.0",
   "description": "Url shortener project in Express.js",
   "license": "ISC",
