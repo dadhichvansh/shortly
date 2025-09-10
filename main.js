@@ -3,6 +3,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import flash from 'connect-flash';
+import requestIp from 'request-ip';
 import { PORT } from './src/validators/env.validator.js';
 import { verifyAuthentication } from './src/middlewares/verify-auth.middleware.js';
 import { shortenerRoute } from './src/routes/shortener.route.js';
@@ -30,14 +31,16 @@ app.use(cookieParser());
 
 app.use(
   session({
+    cookie: { secure: true, httpOnly: true },
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
   })
 );
 
-// Flash messages middleware
+// Middleware for flash messages and request IP logging
 app.use(flash());
+app.use(requestIp.mw());
 
 // Middleware to verify if the user is authenticated
 app.use(verifyAuthentication);
