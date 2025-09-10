@@ -27,7 +27,7 @@ router.get('/profile', fetchProfilePage);
 router.get('/edit-profile', fetchEditProfilePage);
 router.post('/edit-profile', updateUserProfile);
 
-router.post('/logout', userLogout);
+router.get('/logout', userLogout);
 
 // Email verification routes
 router.get('/verify-email', fetchVerifyEmailPage);
