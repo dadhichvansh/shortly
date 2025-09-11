@@ -5,12 +5,11 @@
     </div>
 
     <nav class="navbar">
-      <a href="/">Home</a>
-
       <% if (!user) { %>
       <a href="/login">Login</a>
       <a href="/register">Register</a>
       <% } else { %>
+      <a href="/">Dashboard</a>
       <a href="/profile">Profile</a>
       <a href="/logout">Logout</a>
       <% } %>

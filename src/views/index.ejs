@@ -32,7 +32,7 @@
             </div>
 
             <div class="shortener-form">
-              <h1 class="form-title">URL Shortener</h1>
+              <h1 class="form-title">Shrink a URL</h1>
               <form action="/" method="post" class="url-form" id="url-form">
                 <div class="form-group">
                   <label for="url">
@@ -77,10 +77,10 @@
             </div>
 
             <div class="shortened-urls">
-              <h2 class="section-title">Shortened URLs</h2>
+              <h2 class="section-title">Shortened Links</h2>
               <% if (links && links.length > 0) { %>
               <ul class="url-list">
-                <% links.map(({shortCode, url, id}) => { %> 
+                <% links.map(({shortCode, url, id}) => { %>
                 <% const truncatedUrl = url.length >= 30 ? `${url.slice(0,30)}...` : url %>
                 <li class="url-item">
                   <div class="url-info">
@@ -130,12 +130,12 @@
 
     <script>
       // Simple copy to clipboard functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const copyButtons = document.querySelectorAll(".copy-btn");
+      document.addEventListener('DOMContentLoaded', function () {
+        const copyButtons = document.querySelectorAll('.copy-btn');
 
         copyButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            const url = this.getAttribute("data-url");
+          button.addEventListener('click', function () {
+            const url = this.getAttribute('data-url');
             navigator.clipboard.writeText(url).then(() => {
               // Visual feedback
               this.innerHTML = '<i class="zmdi zmdi-check"></i>';
