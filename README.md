@@ -30,25 +30,37 @@ This project allows users to register, log in, shorten long URLs, and manage the
 
 ## 🛠️ Tech Stack
 
-**Backend**: Node.js, Express.js
-**Database**: MySQL
-**Templating**: EJS
-**Authentication**: JWT, Express-Session
-**Other Tools**: argon2 (password hashing)
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL
+- **Templating**: EJS
+- **Authentication**: JWT, Express-Session
+- **Other Tools**: argon2 (password hashing)
 
 ## 📁 Project Structure
 
 ```bash
 shortly/
-│── server.js        # Entry point
-│── /routes          # Express routes
-│── /controllers     # Business logic
-│── /models          # MySQL queries & schema
-│── /views           # EJS templates
-│── /public          # Static files (CSS, JS)
-│── /middlewares     # Auth middlewares
-│── .env.example     # Sample environment variables
-│── README.md        # Documentation
+│── public/             # Static files (CSS, and images)
+│── src/                # Source files
+│   ├── controllers/    # Business logic
+│   ├── db/             # Database configuration
+│   ├── drizzle/        # MySQL migration files & schema using Drizzle ORM
+│   ├── emails/         # Email templates and services
+│   ├── jobs/           # Background jobs and task scheduling
+│   ├── lib/            # Reusable libraries and utilities
+│   ├── middlewares/    # Authentication middlewares
+│   ├── routes/         # Express routes
+│   ├── services/       # Business logic helpers
+│   ├── validators/     # Input validation
+│   ├── views/          # EJS templates
+│   └── constants.js    # Constants
+│── .env.example        # Sample environment variables
+│── .gitignore          # Git ignore file
+│── drizzle.config.js   # Drizzle ORM configuration
+│── main.js             # Entry point
+│── package-lock.json   # Exact versions of npm dependencies
+│── package.json        # Project metadata and dependencies
+└── README.md           # Documentation
 ```
 
 ## 📦 Setup & Installation
