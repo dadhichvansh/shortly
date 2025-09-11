@@ -1,1 +1,0 @@
-ALTER TABLE `sessions` ADD `expires_at` timestamp NOT NULL;
