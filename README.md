@@ -100,8 +100,8 @@ npm install
 6. **Start the server**
 
 ```bash
-- `npm start` - to start the server
-- `npm run dev` - to start the server in development mode
+`npm start` - to start the server
+`npm run dev` - to start the server in development mode
 ```
 
 7. **Open in browser**
