@@ -41,9 +41,7 @@ export const comparePassword = async (hashedPassword, password) => {
 };
 
 export const createSession = async (userId, { ip, userAgent }) => {
-  const expiresAt = new Date(
-    Date.now() + REFRESH_TOKEN_EXPIRY * MILLISECONDS_PER_SECOND
-  );
+  const expiresAt = new Date(Date.now() + REFRESH_TOKEN_EXPIRY);
 
   const [session] = await db
     .insert(sessionsTable)
