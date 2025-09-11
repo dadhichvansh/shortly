@@ -1,95 +1,128 @@
-# 🔗 URL Shortener - Express.js
+## Shortly – URL Shortener 🔗
 
-A simple URL shortener application built using **Express.js** for the backend and **HTML/CSS** for the frontend. This project allows users to shorten long URLs into a custom or randomly generated short code and access them later using that code.
+A backend-oriented URL shortener built with Express.js, MySQL, EJS, JWT, and Session Authentication.
+This project allows users to register, log in, shorten long URLs, and manage their own collection of shortened links.
 
 ## 🚀 Features
 
-- Shorten long URLs with optional custom short codes
-- Automatically generate unique short codes if none is provided
-- Stores data persistently in a local `links.json` file
-- Fully functional frontend interface for user input and display
-- Minimalistic and responsive UI
+- 🔑 Authentication
+
+  - User registration & login
+  - JWT + Session-based authentication for secure access
+  - Role-based route protection
+
+- ✂️ URL Shortening
+
+  - Generate unique short links for long URLs
+  - Redirect short links → original URLs
+  - Track ownership (each user has their own URLs)
+
+- 📊 User Dashboard
+
+  - View all URLs created by the user
+  - Edit or delete shortened URLs
+  - Copy/share short links easily
+
+- 🎨 UI (EJS)
+
+  - Server-side rendered views with EJS
+  - Clean & minimal responsive design
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Express.js (fs/promises, crypto)
-- **Frontend**: HTML, CSS
-- **Storage**: JSON file (local filesystem)
+**Backend**: Node.js, Express.js
+**Database**: MySQL
+**Templating**: EJS
+**Authentication**: JWT, Express-Session
+**Other Tools**: argon2 (password hashing)
 
 ## 📁 Project Structure
 
 ```bash
-url-shortener-nodejs/
-│
-├── data/
-│ └── links.json # Stores URL and short code mapping
-│
-├── public/
-│ └── style.css # Styling
-│
-├── views/
-│ └── index.html # Frontend UI
-│
-├── main.js # Backend server
-├── validation.js # PORT validation
-│
-├── package.json # For npm dependencies
-└── README.md # Project documentation
+shortly/
+│── server.js        # Entry point
+│── /routes          # Express routes
+│── /controllers     # Business logic
+│── /models          # MySQL queries & schema
+│── /views           # EJS templates
+│── /public          # Static files (CSS, JS)
+│── /middlewares     # Auth middlewares
+│── .env.example     # Sample environment variables
+│── README.md        # Documentation
 ```
 
-## 📦 Installation
+## 📦 Setup & Installation
 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/dadhichvansh/url-shortener-expressjs.git
-cd url-shortener-nodejs
+git clone https://github.com/dadhichvansh/shortly
+cd shortly
 ```
 
-2. **Install dependencies (if using any like nodemon)**
+2. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-3. **Set up environment variables**
+3. **Create the database manually**
 
-- If you need to set any environment variables, create a `.env` file in the root directory.
-- For example, you can set the `PORT` variable to change the server port:
+- Open MySQL (CLI or a GUI like MySQL Workbench).
+- Create a new database (example: shortly_db):
+- ```sql
+  CREATE DATABASE shortly_db;
+  ```
+
+4. **Configure environment variables**
+
+- Create a `.env` file in the root directory.
+- Add the variables as shown in `.env.example` file.
+
+5. **Run Drizzle generate & migrate**
+
+- Generate migration files: `npm run db:generate`
+
+- Apply migrations: `npm run db:migrate`
+
+6. **Start the server**
 
 ```bash
-PORT=3000
+- `npm start` - to start the server
+- `npm run dev` - to start the server in development mode
 ```
 
-You can see `.env.example` for reference.
+7. **Open in browser**
 
-4. **Start the server**
+Navigate to: `http://localhost:3000`
 
-```bash
-- npm start - to start the server
-- npm run dev - to start the server in development mode
-```
+## 📸 Screenshots
 
-5. **Open in browser**
+![Login](https://ibb.co/VcGJYNCH)
+![Register](https://ibb.co/0jBpLhgh)
+![Dashboard](https://ibb.co/qYscSsFD)
+![Shorten URL](https://ibb.co/RpMWhh1J)
 
-Navigate to: http://localhost:3000
+## Demo Video
 
-## 🧪 Usage
-
-- Enter a long URL in the input field.
-- Optionally, provide a custom short code.
-- Click "Shorten".
-- Use the generated short URL to access the original link.
+[![Demo Video](https://img.youtube.com/vi/SxtFtUiP0s0/0.jpg)](https://www.youtube.com/watch?v=SxtFtUiP0s0)
 
 ## 🧹 Future Improvements
 
-- Add database support (e.g., MongoDB or SQLite)
-- Implement user authentication
 - Track analytics like click count
+- Frontend with React + Tailwind for modern UI.
 - Add expiry dates to short links
 
 ## 📄 License
 
 This project is licensed under the MIT License.
 
-Made with 💻 by [Vansh Dadhich]()
+Made with 💻 by [Vansh Dadhich](https://github.com/dadhichvansh)
+Feel free to contribute or suggest improvements!
+
+## 👨‍💻 Author
+
+**Vansh Dadhich**
+
+[LinkedIn](https://www.linkedin.com/in/vansh-dadhich-810217246/),
+[Email](mailto:dadhichvansh46@gmail.com)
