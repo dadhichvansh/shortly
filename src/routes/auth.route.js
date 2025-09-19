@@ -29,6 +29,9 @@ router.post('/edit-profile', updateUserProfile);
 
 router.get('/logout', userLogout);
 
+// Change password routes
+router.get('/change-password', fetchChangePasswordPage);
+
 // Email verification routes
 router.get('/verify-email', fetchVerifyEmailPage);
 router.post('/resend-verification-link', resendVerificationLink);
