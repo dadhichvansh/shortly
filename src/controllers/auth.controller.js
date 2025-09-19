@@ -204,3 +204,8 @@ export const verifyEmailToken = async (req, res) => {
 
   return res.redirect('/profile');
 };
+
+export const fetchChangePasswordPage = (req, res) => {
+  if (!req.user) return res.redirect('/login');
+  return res.render('auth/change-password', { errors: req.flash('errors') });
+};
