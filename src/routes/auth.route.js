@@ -12,6 +12,7 @@ import {
   resendVerificationLink,
   verifyEmailToken,
   fetchChangePasswordPage,
+  updateUserPassword,
 } from '../controllers/auth.controller.js';
 
 const router = Router();
