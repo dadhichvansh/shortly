@@ -32,6 +32,7 @@ router.get('/logout', userLogout);
 
 // Change password routes
 router.get('/change-password', fetchChangePasswordPage);
+router.post('/change-password', updateUserPassword);
 
 // Email verification routes
 router.get('/verify-email', fetchVerifyEmailPage);
