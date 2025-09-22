@@ -2,6 +2,7 @@ import {
   userLoginSchema,
   userRegistrationSchema,
   verifyEmailSchema,
+  verifyPasswordSchema,
   verifyUserSchema,
 } from '../validators/auth.validator.js';
 import {
@@ -214,9 +215,7 @@ export const updateUserPassword = async (req, res) => {
   try {
     if (!req.user) return res.redirect('/login');
 
-    const { success, data, error } = updateUserPasswordSchema.safeParse(
-      req.body
-    );
+    const { success, data, error } = verifyPasswordSchema.safeParse(req.body);
 
     if (!success) {
       const errors = error.errors[0].message;
@@ -224,11 +223,22 @@ export const updateUserPassword = async (req, res) => {
       return res.redirect('/change-password');
     }
 
+    // Find user by Id
     const user = await findUserById(req.user.id);
     if (!user) return res.status(404).send('User not found.');
 
+    // Check if the new password is the same as the old password
+    const passwordIsSame = await comparePassword(user.password, data.password);
+    if (!passwordIsSame) {
+      req.flash('errors', 'Current password does not match.');
+      return res.redirect('/change-password');
+    }
+
+    // Hash the new password
+    const hashedPassword = await hashPassword(data.password);
+
     // Update user password logic here
-    await updateUserPassword({ id: req.user.id, password: data.password });
+    await changeUserPassword({ id: user.id, newPassword: hashedPassword });
 
     res.redirect('/profile');
   } catch (error) {
