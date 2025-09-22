@@ -209,3 +209,29 @@ export const fetchChangePasswordPage = (req, res) => {
   if (!req.user) return res.redirect('/login');
   return res.render('auth/change-password', { errors: req.flash('errors') });
 };
+
+export const updateUserPassword = async (req, res) => {
+  try {
+    if (!req.user) return res.redirect('/login');
+
+    const { success, data, error } = updateUserPasswordSchema.safeParse(
+      req.body
+    );
+
+    if (!success) {
+      const errors = error.errors[0].message;
+      req.flash('errors', errors);
+      return res.redirect('/change-password');
+    }
+
+    const user = await findUserById(req.user.id);
+    if (!user) return res.status(404).send('User not found.');
+
+    // Update user password logic here
+    await updateUserPassword({ id: req.user.id, password: data.password });
+
+    res.redirect('/profile');
+  } catch (error) {
+    console.error('Error updating password:', error.message);
+  }
+};
