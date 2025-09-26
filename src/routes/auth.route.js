@@ -31,9 +31,11 @@ router.post('/edit-profile', updateUserProfile);
 
 router.get('/logout', userLogout);
 
-// Change password routes
+// Change password and forgot password routes
 router.get('/change-password', fetchChangePasswordPage);
 router.post('/change-password', updateUserPassword);
+
+router.get('/reset-password', fetchResetPasswordPage);
 
 // Email verification routes
 router.get('/verify-email', fetchVerifyEmailPage);
