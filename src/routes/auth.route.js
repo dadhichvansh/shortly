@@ -13,6 +13,7 @@ import {
   verifyEmailToken,
   fetchChangePasswordPage,
   updateUserPassword,
+  fetchResetPasswordPage,
 } from '../controllers/auth.controller.js';
 
 const router = Router();
