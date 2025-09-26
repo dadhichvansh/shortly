@@ -245,3 +245,10 @@ export const updateUserPassword = async (req, res) => {
     console.error('Error updating password:', error.message);
   }
 };
+
+export const fetchResetPasswordPage = (req, res) => {
+  return res.render('auth/forgot-password', {
+    formSubmitted: req.flash('formSubmitted')[0],
+    errors: req.flash('errors'),
+  });
+};
