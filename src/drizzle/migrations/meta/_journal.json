@@ -15,6 +15,13 @@
       "when": 1757594666848,
       "tag": "0001_lame_sally_floyd",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1758914971239,
+      "tag": "0002_smiling_korg",
+      "breakpoints": true
     }
   ]
 }
