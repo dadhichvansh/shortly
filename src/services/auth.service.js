@@ -275,3 +275,12 @@ export const changeUserPassword = async ({ id, newPassword }) => {
     .set({ password: newPassword })
     .where(eq(usersTable.id, id));
 };
+
+export const findUserByEmail = async (email) => {
+  const [user] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.email, email));
+
+  return user;
+};
