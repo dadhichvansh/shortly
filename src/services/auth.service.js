@@ -1,6 +1,7 @@
 import { and, eq, gte, lt, sql } from 'drizzle-orm';
 import { db } from '../db/db.js';
 import {
+  passwordResetTokensTable,
   sessionsTable,
   usersTable,
   verifyEmailTokensTable,
@@ -283,4 +284,22 @@ export const findUserByEmail = async (email) => {
     .where(eq(usersTable.email, email));
 
   return user;
+};
+
+export const createPasswordResetLink = async ({ userId }) => {
+  const token = crypto.randomBytes(32).toString('hex');
+  const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+
+  // delete any existing tokens for this specific user
+  await db
+    .delete(passwordResetTokensTable)
+    .where(eq(passwordResetTokensTable.userId, userId));
+
+  // insert the new token
+  await db.insert(passwordResetTokensTable).values({
+    userId,
+    tokenHash,
+  });
+
+  return `${process.env.FRONTEND_URL}/reset-password/${token}`;
 };
