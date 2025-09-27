@@ -14,6 +14,7 @@ import {
   fetchChangePasswordPage,
   updateUserPassword,
   fetchResetPasswordPage,
+  resetPassword,
 } from '../controllers/auth.controller.js';
 
 const router = Router();
@@ -37,6 +38,7 @@ router.get('/change-password', fetchChangePasswordPage);
 router.post('/change-password', updateUserPassword);
 
 router.get('/reset-password', fetchResetPasswordPage);
+router.post('/reset-password', resetPassword);
 
 // Email verification routes
 router.get('/verify-email', fetchVerifyEmailPage);
