@@ -21,6 +21,7 @@ import {
   verifyUserEmailAndUpdate,
   findUserByEmail,
   createPasswordResetLink,
+  verifyPasswordResetToken,
 } from '../services/auth.service.js';
 import { fetchShortenedUrls } from '../services/shortener.service.js';
 import { fetchHtmlFromMjmlTemplate } from '../lib/fetch-html-from-mjml-template.js';
@@ -294,4 +295,16 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     console.error('Error resetting password:', error.message);
   }
+};
+
+export const fetchResetPasswordPage = async (req, res) => {
+  const { token } = req.params;
+  const isTokenValid = await verifyPasswordResetToken(token);
+  if (!isTokenValid) return res.render('auth/wrong-reset-password-token');
+
+  res.render('auth/reset-password', {
+    formSubmitted: req.flash('formSubmitted')[0],
+    errors: req.flash('errors'),
+    token,
+  });
 };
