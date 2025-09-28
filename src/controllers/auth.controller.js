@@ -1,4 +1,5 @@
 import {
+  forgotPasswordSchema,
   userLoginSchema,
   userRegistrationSchema,
   verifyEmailSchema,
@@ -18,8 +19,12 @@ import {
   sendNewEmailVerificationLink,
   updateUserByName,
   verifyUserEmailAndUpdate,
+  findUserByEmail,
+  createPasswordResetLink,
 } from '../services/auth.service.js';
 import { fetchShortenedUrls } from '../services/shortener.service.js';
+import { fetchHtmlFromMjmlTemplate } from '../lib/fetch-html-from-mjml-template.js';
+import { sendEmail } from '../lib/send-email.js';
 
 export const registerPage = (req, res) => {
   if (req.user) return res.redirect('/');
@@ -246,9 +251,47 @@ export const updateUserPassword = async (req, res) => {
   }
 };
 
-export const fetchResetPasswordPage = (req, res) => {
+export const fetchForgotPasswordPage = (req, res) => {
   return res.render('auth/forgot-password', {
     formSubmitted: req.flash('formSubmitted')[0],
     errors: req.flash('errors'),
   });
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { success, data, error } = forgotPasswordSchema.safeParse(req.body);
+
+    if (!success) {
+      const errors = error.errors[0].message;
+      req.flash('errors', errors);
+      return res.redirect('/reset-password');
+    }
+
+    const user = await findUserByEmail(data.email);
+    if (!user) {
+      req.flash('errors', 'User not found.');
+      return res.redirect('/reset-password');
+    }
+
+    const passwordResetLink = await createPasswordResetLink({
+      userId: user.id,
+    });
+
+    const html = await fetchHtmlFromMjmlTemplate('reset-password-email', {
+      name: user.username,
+      link: passwordResetLink,
+    });
+
+    await sendEmail({
+      to: data.email,
+      subject: 'Reset Your Password',
+      html,
+    });
+
+    req.flash('formSubmitted', true);
+    res.redirect('/reset-password');
+  } catch (error) {
+    console.error('Error resetting password:', error.message);
+  }
 };
