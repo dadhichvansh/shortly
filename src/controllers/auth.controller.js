@@ -4,6 +4,7 @@ import {
   userRegistrationSchema,
   verifyEmailSchema,
   verifyPasswordSchema,
+  verifyResetPasswordSchema,
   verifyUserSchema,
 } from '../validators/auth.validator.js';
 import {
@@ -22,6 +23,8 @@ import {
   findUserByEmail,
   createPasswordResetLink,
   verifyPasswordResetToken,
+  clearPasswordResetToken,
+  changeUserPassword,
 } from '../services/auth.service.js';
 import { fetchShortenedUrls } from '../services/shortener.service.js';
 import { fetchHtmlFromMjmlTemplate } from '../lib/fetch-html-from-mjml-template.js';
@@ -307,4 +310,41 @@ export const fetchResetPasswordPage = async (req, res) => {
     errors: req.flash('errors'),
     token,
   });
+};
+
+export const finalResetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const isTokenValid = await verifyPasswordResetToken(token);
+    if (!isTokenValid) {
+      req.flash('errors', 'Invalid or expired token.');
+      return res.render('auth/wrong-reset-password-token');
+    }
+
+    const { success, data, error } = verifyResetPasswordSchema.safeParse(
+      req.body
+    );
+
+    if (!success) {
+      const errors = error.errors[0].message;
+      req.flash('errors', errors);
+      return res.redirect(`/reset-password/${token}`);
+    }
+
+    // If validation is successful, proceed with the password reset
+    const user = await findUserById(isTokenValid.userId);
+    if (!user) {
+      req.flash('errors', 'User not found.');
+      return res.redirect(`/reset-password/${token}`);
+    }
+
+    await clearPasswordResetToken(user.id);
+
+    const hashedPassword = await hashPassword(data.newPassword);
+    await changeUserPassword({ id: user.id, newPassword: hashedPassword });
+
+    res.redirect('/login');
+  } catch (error) {
+    console.error('Error resetting password:', error.message);
+  }
 };
