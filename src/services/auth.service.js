@@ -319,3 +319,9 @@ export const verifyPasswordResetToken = async (token) => {
 
   return data;
 };
+
+export const clearPasswordResetToken = async (userId) => {
+  return await db
+    .delete(passwordResetTokensTable)
+    .where(eq(passwordResetTokensTable.userId, userId));
+};
